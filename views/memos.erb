@@ -1,0 +1,12 @@
+<a href='memos/new' id="add_link">メモを登録する</a>
+<div class="memos">
+  <ul>
+    <% @memos.each do |memo| %>
+      <li>
+        <a href='/memos/<%= memo[:id] %>'>
+          <%= h memo[:title] %>
+        </a>
+      </li>
+      <% end %>
+  </ul>
+</div>

@@ -1,0 +1,16 @@
+<dl class="memo_content">
+  <dt>タイトル：</dt>
+  <dd>
+    <%= h(@title) %>
+  </dd>
+  <dt>内容：</dt>
+  <dd>
+  <%= h(@content).gsub("\r\n", "<br/>") %>
+  </dd>
+</dl>
+<div class="change"><a href='/memos/<%= @memo_id %>/edit' class="link_to_change">メモを編集する</a></div>
+<form action="" method="POST" name="delete">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="削除">
+</form>
+<div class="return"><a href='/memos'>TOPページに戻る</a></div>
