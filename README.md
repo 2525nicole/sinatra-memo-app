@@ -11,3 +11,14 @@
 
 ## 利用手順
 
+1. このリポジトリをクローンする
+
+`$ git clone git@github.com:2525nicole/sinatra-memo-app.git`
+
+2. リポジトリに入る
+
+`$ cd sinatra-memo-app`
+
+3. Gemをインストールする
+
+`$ bundle install`
