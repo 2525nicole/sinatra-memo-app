@@ -17,7 +17,7 @@ end
 
 post '/memos/new' do
   memo_details_list = convert_memos_to_hash
-  memo_details_list['all_memos'] << { 'id' => SecureRandom.uuid, 'title' => params[:title], 'content' => params[:content] }
+  memo_details_list['all_memos'] << { id: SecureRandom.uuid, title: params[:title], content: params[:content] }
   write_to_memos_list(memo_details_list)
   redirect '/memos'
 end
