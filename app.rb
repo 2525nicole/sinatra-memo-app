@@ -8,9 +8,9 @@ require "sinatra/content_for"
 
 get '/memos' do
   memo_details_list = convert_memos_to_hash
-  @memos = []
-  memo_details_list['all_memos'].each do |memo_details|
-    @memos << { title: memo_details['title'], id: memo_details['id'] }
+  @memos = 
+  memo_details_list['all_memos'].map do |memo_details|
+    { title: memo_details['title'], id: memo_details['id'] }
   end
   erb :memos
 end
