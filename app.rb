@@ -4,14 +4,14 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 require 'securerandom'
-require "sinatra/content_for"
+require 'sinatra/content_for'
 
 get '/memos' do
   memo_details_list = convert_memos_to_hash
-  @memos = 
-  memo_details_list['all_memos'].map do |memo_details|
-    { title: memo_details['title'], id: memo_details['id'] }
-  end
+  @memos =
+    memo_details_list['all_memos'].map do |memo_details|
+      { title: memo_details['title'], id: memo_details['id'] }
+    end
   erb :memos
 end
 
@@ -35,8 +35,8 @@ end
 
 delete '/memos/:id' do
   memo_details_list = convert_memos_to_hash
-  after_delete_memo = 
-  { :all_memos => memo_details_list["all_memos"].filter { |memo_details| memo_details["id"] != params[:id] } }
+  after_delete_memo =
+    { all_memos: memo_details_list['all_memos'].filter { |memo_details| memo_details['id'] != params[:id] } }
   write_to_memos_list(after_delete_memo)
   redirect '/deletion_completed_message'
 end
@@ -78,12 +78,12 @@ helpers do
 
   def make_memo_variable(memos)
     memos['all_memos'].each do |memo_details|
-      if memo_details['id'] == params[:id]
-        @memo = { 
-          title: memo_details['title'],
-          content: memo_details['content']
-                }
-      end
+      next unless memo_details['id'] == params[:id]
+
+      @memo = {
+        title: memo_details['title'],
+        content: memo_details['content']
+      }
     end
   end
 end
