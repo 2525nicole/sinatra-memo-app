@@ -4,11 +4,11 @@
 <dl class="memo_content">
   <dt>タイトル：</dt>
   <dd>
-    <%= h(@title) %>
+    <%= h(@memo[:title]) %>
   </dd>
   <dt>内容：</dt>
   <dd>
-  <%= h(@content).gsub("\r\n", "<br/>") %>
+  <%= h(@memo[:content]).gsub("\r\n", "<br/>") %>
   </dd>
 </dl>
 <div class="change"><a href='/memos/<%= @memo_id %>/edit' class="link_to_change">メモを編集する</a></div>

@@ -79,8 +79,10 @@ helpers do
   def make_memo_variable(memos)
     memos['all_memos'].each do |memo_details|
       if memo_details['id'] == params[:id]
-        @title = memo_details['title']
-        @content = memo_details['content']
+        @memo = { 
+          title: memo_details['title'],
+          content: memo_details['content']
+                }
       end
     end
   end

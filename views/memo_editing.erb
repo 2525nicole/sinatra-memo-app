@@ -5,9 +5,9 @@
   <input type="hidden" name="_method" value="PATCH">
   <dl>
     <dt><label for="title">タイトル</label></dt>
-    <dd><input type="text" name="title" id="title" value="<%= @title %>" required class="form_text"></dd>
+    <dd><input type="text" name="title" id="title" value="<%= @memo[:title] %>" required class="form_text"></dd>
     <dt><label for="content">内容</label></dt>
-    <dd><textarea name="content" id="content" required class="form_textarea"><%= @content %></textarea></dd>
+    <dd><textarea name="content" id="content" required class="form_textarea"><%= @memo[:content] %></textarea></dd>
   </dl>
   <input type="submit" value="変更を保存" class="btn">
 </form>
