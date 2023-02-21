@@ -35,7 +35,8 @@ end
 
 delete '/memos/:id' do
   memo_details_list = convert_memos_to_hash
-  after_delete_memo = memo_details_list.each { |_key, val| val.delete_if { |memo_details| memo_details['id'] == params[:id] } }
+  after_delete_memo = 
+  { :all_memos => memo_details_list["all_memos"].filter { |memo_details| memo_details["id"] != params[:id] } }
   write_to_memos_list(after_delete_memo)
   redirect '/deletion_completed_message'
 end
