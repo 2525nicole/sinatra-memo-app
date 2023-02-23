@@ -7,18 +7,18 @@ require 'securerandom'
 require 'sinatra/content_for'
 
 get '/memos' do
-  memo_details_list = convert_memos_to_hash
+  memos = convert_memos_to_hash
   @memos =
-    memo_details_list['all_memos'].map do |memo_details|
-      { title: memo_details['title'], id: memo_details['id'] }
+    memos['all_memos'].map do |memo|
+      { title: memo['title'], id: memo['id'] }
     end
   erb :memos
 end
 
 post '/memos/new' do
-  memo_details_list = convert_memos_to_hash
-  memo_details_list['all_memos'] << { id: SecureRandom.uuid, title: params[:title], content: params[:content] }
-  write_to_memos_list(memo_details_list)
+  memos = convert_memos_to_hash
+  memos['all_memos'] << { id: SecureRandom.uuid, title: params[:title], content: params[:content] }
+  write_to_memos_list(memos)
   redirect '/memos'
 end
 
@@ -27,16 +27,16 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  memo_details_list = convert_memos_to_hash
-  make_memo_variable(memo_details_list)
+  memos = convert_memos_to_hash
+  make_memo_variable(memos)
   @memo_id = params[:id]
   erb :memo_content
 end
 
 delete '/memos/:id' do
-  memo_details_list = convert_memos_to_hash
+  memos = convert_memos_to_hash
   after_delete_memo =
-    { all_memos: memo_details_list['all_memos'].filter { |memo_details| memo_details['id'] != params[:id] } }
+    { all_memos: memos['all_memos'].filter { |memo| memo['id'] != params[:id] } }
   write_to_memos_list(after_delete_memo)
   redirect '/deletion_completed_message'
 end
@@ -46,19 +46,19 @@ get '/deletion_completed_message' do
 end
 
 patch '/memos/:id/edit' do
-  memo_details_list = convert_memos_to_hash
-  memo_details_list['all_memos'].each do |memo_details|
-    @edit_memo = memo_details if memo_details['id'] == params[:id]
+  memos = convert_memos_to_hash
+  memos['all_memos'].each do |memo|
+    @edit_memo = memo if memo['id'] == params[:id]
   end
   @edit_memo['title'] = params[:title]
   @edit_memo['content'] = params[:content]
-  write_to_memos_list(memo_details_list)
+  write_to_memos_list(memos)
   redirect "/memos/#{params[:id]}"
 end
 
 get '/memos/:id/edit' do
-  memo_details_list = convert_memos_to_hash
-  make_memo_variable(memo_details_list)
+  memos = convert_memos_to_hash
+  make_memo_variable(memos)
   @edit_memo_id = params[:id]
   erb :memo_editing
 end
@@ -77,12 +77,12 @@ helpers do
   end
 
   def make_memo_variable(memos)
-    memos['all_memos'].each do |memo_details|
-      next unless memo_details['id'] == params[:id]
+    memos['all_memos'].each do |memo|
+      next unless memo['id'] == params[:id]
 
       @memo = {
-        title: memo_details['title'],
-        content: memo_details['content']
+        title: memo['title'],
+        content: memo['content']
       }
     end
   end
