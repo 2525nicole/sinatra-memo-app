@@ -47,11 +47,10 @@ end
 
 patch '/memos/:id/edit' do
   memos = convert_memos_to_hash
-  memos['all_memos'].each do |memo|
-    @edit_memo = memo if memo['id'] == params[:id]
-  end
-  @edit_memo['title'] = params[:title]
-  @edit_memo['content'] = params[:content]
+  edit_memo =
+  memos['all_memos'].filter { |memo| memo['id'] == params[:id] }
+  edit_memo[0]['title'] = params[:title]
+  edit_memo[0]['content'] = params[:content]
   write_to_memos_list(memos)
   redirect "/memos/#{params[:id]}"
 end
