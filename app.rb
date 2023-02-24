@@ -76,13 +76,10 @@ helpers do
   end
 
   def make_memo_variable(memos)
-    memos['all_memos'].each do |memo|
-      next unless memo['id'] == params[:id]
-
-      @memo = {
-        title: memo['title'],
-        content: memo['content']
-      }
-    end
+    memo = memos['all_memos'].find { |memo| memo['id'] == params[:id] }
+    @memo = {
+      title: memo['title'],
+      content: memo['content']
+    }
   end
 end
