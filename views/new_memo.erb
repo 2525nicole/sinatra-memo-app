@@ -1,0 +1,14 @@
+<% content_for :title do %>
+  メモ新規投稿
+<% end %>
+<form action="" method="POST">
+  <dl>
+    <dt><label for="title">タイトル</label></dt>
+    <dd><input type="text" name="title" id="title" required class="form_text"></dd> <dt><label for="content">内容</label></dt>
+    <dd><textarea name="content" id="content" required class="form_textarea"></textarea></dd>
+  </dl>
+  <div class="form_btn">
+  <button type="submit" class="btn">保存</button>
+  </div>
+</form>
+<div class="return"><a href='/memos'>TOPページに戻る</a></div>
