@@ -1,2 +1,4 @@
 .erb-lint.yml
 .rubocop.yml
+.ruby-version
+
