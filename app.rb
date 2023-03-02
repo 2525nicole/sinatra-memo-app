@@ -52,7 +52,7 @@ end
 
 get '/memos/:id' do
   make_memo_variable
-  @memo_id = params[:id]
+  @memo_id = params[:id] # make_memo_variableでidも取得するなら消す
   erb :memo_content
 end
 
@@ -110,6 +110,7 @@ helpers do
     connect = connect_db
     memo = connect.exec("SELECT memo_id, memo_title, memo_content FROM Memos WHERE memo_id = '#{params[:id]}';")
     @memo = {
+      #id: memo[0]['memo_id'] #ここ有効にして試してみる。memo_content.erbの@memo_idを@memo[:id]にも変える
       title: memo[0]['memo_title'],
       content: memo[0]['memo_content']
     }
