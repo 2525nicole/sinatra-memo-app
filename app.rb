@@ -78,9 +78,15 @@ patch '/memos/:id/edit' do
   redirect "/memos/#{params[:id]}"
 end
 
+# get '/memos/:id/edit' do
+#   memos = convert_memos_to_hash
+#   make_memo_variable(memos)
+#   @edit_memo_id = params[:id]
+#   erb :memo_editing
+# end
+
 get '/memos/:id/edit' do
-  memos = convert_memos_to_hash
-  make_memo_variable(memos)
+  make_memo_variable
   @edit_memo_id = params[:id]
   erb :memo_editing
 end
