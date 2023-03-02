@@ -5,12 +5,23 @@ require 'sinatra/reloader'
 require 'json'
 require 'securerandom'
 require 'sinatra/content_for'
+require 'pg'
+
+# get '/memos' do
+#   memos = convert_memos_to_hash
+#   @memos =
+#     memos['all_memos'].map do |memo|
+#       { title: memo['title'], id: memo['id'] }
+#     end
+#   erb :memos
+# end
 
 get '/memos' do
-  memos = convert_memos_to_hash
+  connect = PG.connect( dbname: 'memo_app' )
+  memos = connect.exec("SELECT * FROM Memos")
   @memos =
-    memos['all_memos'].map do |memo|
-      { title: memo['title'], id: memo['id'] }
+    memos.map do |memo|
+      { title: memo['memo_title'], id: memo['memo_id'] }
     end
   erb :memos
 end
