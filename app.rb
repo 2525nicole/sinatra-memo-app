@@ -17,7 +17,7 @@ require 'pg'
 # end
 
 get '/memos' do
-  connect = PG.connect( dbname: 'memo_app' )
+  connect = connect_db
   memos = connect.exec("SELECT * FROM Memos")
   @memos =
     memos.map do |memo|
@@ -26,10 +26,16 @@ get '/memos' do
   erb :memos
 end
 
+# post '/memos/new' do
+#   memos = convert_memos_to_hash
+#   memos['all_memos'] << { id: SecureRandom.uuid, title: params[:title], content: params[:content] }
+#   write_to_memos_list(memos)
+#   redirect '/memos'
+# end
+
 post '/memos/new' do
-  memos = convert_memos_to_hash
-  memos['all_memos'] << { id: SecureRandom.uuid, title: params[:title], content: params[:content] }
-  write_to_memos_list(memos)
+  connect = connect_db
+  connect.exec("INSERT INTO Memos VALUES ('#{SecureRandom.uuid}', '#{params[:title]}', '#{params[:content]}');")
   redirect '/memos'
 end
 
@@ -92,5 +98,9 @@ helpers do
       title: memo['title'],
       content: memo['content']
     }
+  end
+
+  def connect_db
+    PG.connect( dbname: 'memo_app' )
   end
 end
