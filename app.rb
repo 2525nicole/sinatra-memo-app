@@ -43,9 +43,15 @@ get '/memos/new' do
   erb :new_memo
 end
 
+# get '/memos/:id' do
+#   memos = convert_memos_to_hash
+#   make_memo_variable(memos)
+#   @memo_id = params[:id]
+#   erb :memo_content
+# end
+
 get '/memos/:id' do
-  memos = convert_memos_to_hash
-  make_memo_variable(memos)
+  make_memo_variable
   @memo_id = params[:id]
   erb :memo_content
 end
@@ -92,11 +98,20 @@ helpers do
     File.open('memo.json', 'w') { |file| JSON.dump(memo_contents, file) }
   end
 
-  def make_memo_variable(memos)
-    memo = memos['all_memos'].find { |m| m['id'] == params[:id] }
+  # def make_memo_variable(memos)
+  #   memo = memos['all_memos'].find { |m| m['id'] == params[:id] }
+  #   @memo = {
+  #     title: memo['title'],
+  #     content: memo['content']
+  #   }
+  # end
+
+  def make_memo_variable
+    connect = connect_db
+    memo = connect.exec("SELECT memo_id, memo_title, memo_content FROM Memos WHERE memo_id = '#{params[:id]}';")
     @memo = {
-      title: memo['title'],
-      content: memo['content']
+      title: memo[0]['memo_title'],
+      content: memo[0]['memo_content']
     }
   end
 
