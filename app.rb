@@ -56,11 +56,17 @@ get '/memos/:id' do
   erb :memo_content
 end
 
+# delete '/memos/:id' do
+#   memos = convert_memos_to_hash
+#   after_delete_memo =
+#     { all_memos: memos['all_memos'].filter { |memo| memo['id'] != params[:id] } }
+#   write_to_memos_list(after_delete_memo)
+#   redirect '/deletion_completed_message'
+# end
+
 delete '/memos/:id' do
-  memos = convert_memos_to_hash
-  after_delete_memo =
-    { all_memos: memos['all_memos'].filter { |memo| memo['id'] != params[:id] } }
-  write_to_memos_list(after_delete_memo)
+  connect = connect_db
+  connect.exec("DELETE FROM Memos WHERE memo_id = '#{params[:id]}'")
   redirect '/deletion_completed_message'
 end
 
