@@ -74,13 +74,19 @@ get '/deletion_completed_message' do
   erb :deletion_completed_message
 end
 
+# patch '/memos/:id/edit' do
+#   memos = convert_memos_to_hash
+#   edit_memo =
+#     memos['all_memos'].find { |memo| memo['id'] == params[:id] }
+#   edit_memo['title'] = params[:title]
+#   edit_memo['content'] = params[:content]
+#   write_to_memos_list(memos)
+#   redirect "/memos/#{params[:id]}"
+# end
+
 patch '/memos/:id/edit' do
-  memos = convert_memos_to_hash
-  edit_memo =
-    memos['all_memos'].find { |memo| memo['id'] == params[:id] }
-  edit_memo['title'] = params[:title]
-  edit_memo['content'] = params[:content]
-  write_to_memos_list(memos)
+  connect = connect_db
+  connect.exec("UPDATE Memos SET memo_title = '#{params[:title]}', memo_content = '#{params[:content]}' WHERE memo_id = '#{params[:id]}'")
   redirect "/memos/#{params[:id]}"
 end
 
