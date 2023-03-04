@@ -7,6 +7,8 @@ require 'securerandom'
 require 'sinatra/content_for'
 require 'pg'
 
+connect =  PG.connect( dbname: 'memo_app' )
+
 # get '/memos' do
 #   memos = convert_memos_to_hash
 #   @memos =
@@ -17,7 +19,7 @@ require 'pg'
 # end
 
 get '/memos' do
-  connect = connect_db
+  #connect = connect_db
   memos = connect.exec("SELECT * FROM Memos")
   @memos =
     memos.map do |memo|
@@ -34,7 +36,7 @@ end
 # end
 
 post '/memos/new' do
-  connect = connect_db
+  #connect = connect_db
   connect.exec("INSERT INTO Memos VALUES ('#{SecureRandom.uuid}', '#{params[:title]}', '#{params[:content]}');")
   redirect '/memos'
 end
@@ -65,7 +67,7 @@ end
 # end
 
 delete '/memos/:id' do
-  connect = connect_db
+  #connect = connect_db
   connect.exec("DELETE FROM Memos WHERE memo_id = '#{params[:id]}'")
   redirect '/deletion_completed_message'
 end
@@ -85,8 +87,13 @@ end
 # end
 
 patch '/memos/:id/edit' do
-  connect = connect_db
-  connect.exec("UPDATE Memos SET memo_title = '#{params[:title]}', memo_content = '#{params[:content]}' WHERE memo_id = '#{params[:id]}'")
+  #connect = connect_db
+  connect.exec(
+    "UPDATE Memos
+      SET memo_title = '#{params[:title]}',
+      memo_content = '#{params[:content]}'
+      WHERE memo_id = '#{params[:id]}'"
+      )
   redirect "/memos/#{params[:id]}"
 end
 
@@ -126,7 +133,11 @@ helpers do
 
   def make_memo_variable
     connect = connect_db
-    memo = connect.exec("SELECT memo_id, memo_title, memo_content FROM Memos WHERE memo_id = '#{params[:id]}';")
+    memo = connect.exec(
+      "SELECT memo_id, memo_title, memo_content
+        FROM Memos
+        WHERE memo_id = '#{params[:id]}';"
+        )
     @memo = {
       id: memo[0]['memo_id'],
       title: memo[0]['memo_title'],
@@ -134,7 +145,7 @@ helpers do
     }
   end
 
-  def connect_db
-    PG.connect( dbname: 'memo_app' )
-  end
+  # def connect_db
+  #   PG.connect( dbname: 'memo_app' )
+  # end
 end
