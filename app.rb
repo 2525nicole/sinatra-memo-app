@@ -19,7 +19,7 @@ get '/memos' do
 end
 
 post '/memos/new' do
-  connect.exec("INSERT INTO Memos VALUES ('#{SecureRandom.uuid}', '#{params[:title]}', '#{params[:content]}');")
+  connect.exec("INSERT INTO Memos VALUES ($1, $2, $3)", [ SecureRandom.uuid, params[:title], params[:content]])
   redirect '/memos'
 end
 
@@ -44,9 +44,10 @@ end
 patch '/memos/:id/edit' do
   connect.exec(
     "UPDATE Memos
-      SET memo_title = '#{params[:title]}',
-      memo_content = '#{params[:content]}'
-      WHERE memo_id = '#{params[:id]}'"
+      SET memo_title = $1,
+      memo_content = $2
+      WHERE memo_id = $3",
+      [ params[:title], params[:content], params[:id] ]
       )
   redirect "/memos/#{params[:id]}"
 end
