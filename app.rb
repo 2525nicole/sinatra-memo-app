@@ -6,19 +6,18 @@ require 'securerandom'
 require 'sinatra/content_for'
 require 'pg'
 
-connect =  PG.connect( dbname: 'memo_app' )
+CONNECTION =  PG.connect( dbname: 'memo_app' )
 
 get '/memos' do
-  memos = connect.exec("SELECT * FROM Memos")
-  @memos =
-    memos.map do |memo|
-      { title: memo['memo_title'], id: memo['memo_id'] }
-    end
+  @memos = CONNECTION.exec("SELECT * FROM Memos")
   erb :memos
 end
 
 post '/memos/new' do
-  connect.exec("INSERT INTO Memos VALUES ($1, $2, $3)", [ SecureRandom.uuid, params[:title], params[:content]])
+  CONNECTION.exec(
+    "INSERT INTO Memos VALUES ($1, $2, $3)",
+    [ SecureRandom.uuid, params[:title], params[:content]]
+    )
   redirect '/memos'
 end
 
@@ -27,12 +26,15 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  make_memo_variable
+  memo = identify_the_memo(CONNECTION)
+  make_memo_variable(memo)
   erb :memo_content
 end
 
 delete '/memos/:id' do
-  connect.exec("DELETE FROM Memos WHERE memo_id = '#{params[:id]}'")
+  CONNECTION.exec(
+    "DELETE FROM Memos WHERE memo_id = '#{params[:id]}'"
+    )
   redirect '/deletion_completed_message'
 end
 
@@ -41,7 +43,7 @@ get '/deletion_completed_message' do
 end
 
 patch '/memos/:id/edit' do
-  connect.exec(
+  CONNECTION.exec(
     "UPDATE Memos
       SET memo_title = $1,
       memo_content = $2
@@ -52,7 +54,8 @@ patch '/memos/:id/edit' do
 end
 
 get '/memos/:id/edit' do
-  make_memo_variable
+  memo = identify_the_memo(CONNECTION)
+  make_memo_variable(memo)
   erb :memo_editing
 end
 
@@ -61,13 +64,15 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def make_memo_variable
-    connect = connect_db
-    memo = connect.exec(
+  def identify_the_memo(connection)
+    connection.exec(
       "SELECT memo_id, memo_title, memo_content
         FROM Memos
         WHERE memo_id = '#{params[:id]}';"
         )
+  end
+
+  def make_memo_variable(memo)
     @memo = {
       id: memo[0]['memo_id'],
       title: memo[0]['memo_title'],
