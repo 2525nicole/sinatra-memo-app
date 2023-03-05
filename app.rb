@@ -62,14 +62,6 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def convert_memos_to_hash
-    JSON.parse(File.read('memo.json'))
-  end
-
-  def write_to_memos_list(memo_contents)
-    File.open('memo.json', 'w') { |file| JSON.dump(memo_contents, file) }
-  end
-
   def make_memo_variable
     connect = connect_db
     memo = connect.exec(
