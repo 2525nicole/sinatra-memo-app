@@ -2,7 +2,6 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 require 'securerandom'
 require 'sinatra/content_for'
 require 'pg'
