@@ -6,18 +6,18 @@ require 'securerandom'
 require 'sinatra/content_for'
 require 'pg'
 
-CONNECTION =  PG.connect( dbname: 'memo_app' )
+CONNECTION = PG.connect(dbname: 'memo_app')
 
 get '/memos' do
-  @memos = CONNECTION.exec("SELECT * FROM Memos")
+  @memos = CONNECTION.exec('SELECT * FROM Memos')
   erb :memos
 end
 
 post '/memos/new' do
   CONNECTION.exec(
-    "INSERT INTO Memos VALUES ($1, $2, $3)",
-    [ SecureRandom.uuid, params[:title], params[:content]]
-    )
+    'INSERT INTO Memos VALUES ($1, $2, $3)',
+    [SecureRandom.uuid, params[:title], params[:content]]
+  )
   redirect '/memos'
 end
 
@@ -34,7 +34,7 @@ end
 delete '/memos/:id' do
   CONNECTION.exec(
     "DELETE FROM Memos WHERE memo_id = '#{params[:id]}'"
-    )
+  )
   redirect '/deletion_completed_message'
 end
 
@@ -48,8 +48,8 @@ patch '/memos/:id/edit' do
       SET memo_title = $1,
       memo_content = $2
       WHERE memo_id = $3",
-      [ params[:title], params[:content], params[:id] ]
-      )
+    [params[:title], params[:content], params[:id]]
+  )
   redirect "/memos/#{params[:id]}"
 end
 
@@ -69,7 +69,7 @@ helpers do
       "SELECT memo_id, memo_title, memo_content
         FROM Memos
         WHERE memo_id = '#{params[:id]}';"
-        )
+    )
   end
 
   def make_memo_variable(memo)
