@@ -11,7 +11,7 @@
   <%= h(@memo[:content]).gsub("\r\n", "<br/>") %>
   </dd>
 </dl>
-<div class="change"><a href='/memos/<%= @memo_id %>/edit' class="link_to_change">メモを編集する</a></div>
+<div class="change"><a href='/memos/<%= @memo[:id] %>/edit' class="link_to_change">メモを編集する</a></div>
 <form action="" method="POST" name="delete">
   <input type="hidden" name="_method" value="DELETE">
   <input type="submit" value="削除">

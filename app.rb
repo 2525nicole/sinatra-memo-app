@@ -2,23 +2,22 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 require 'securerandom'
 require 'sinatra/content_for'
+require 'pg'
+
+CONNECTION = PG.connect(dbname: 'memo_app')
 
 get '/memos' do
-  memos = convert_memos_to_hash
-  @memos =
-    memos['all_memos'].map do |memo|
-      { title: memo['title'], id: memo['id'] }
-    end
+  @memos = CONNECTION.exec('SELECT * FROM Memos')
   erb :memos
 end
 
 post '/memos/new' do
-  memos = convert_memos_to_hash
-  memos['all_memos'] << { id: SecureRandom.uuid, title: params[:title], content: params[:content] }
-  write_to_memos_list(memos)
+  CONNECTION.exec(
+    'INSERT INTO Memos VALUES ($1, $2, $3)',
+    [SecureRandom.uuid, params[:title], params[:content]]
+  )
   redirect '/memos'
 end
 
@@ -27,17 +26,15 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  memos = convert_memos_to_hash
-  make_memo_variable(memos)
-  @memo_id = params[:id]
+  memo = identify_the_memo(CONNECTION)
+  make_memo_variable(memo)
   erb :memo_content
 end
 
 delete '/memos/:id' do
-  memos = convert_memos_to_hash
-  after_delete_memo =
-    { all_memos: memos['all_memos'].filter { |memo| memo['id'] != params[:id] } }
-  write_to_memos_list(after_delete_memo)
+  CONNECTION.exec(
+    "DELETE FROM Memos WHERE memo_id = '#{params[:id]}'"
+  )
   redirect '/deletion_completed_message'
 end
 
@@ -46,19 +43,19 @@ get '/deletion_completed_message' do
 end
 
 patch '/memos/:id/edit' do
-  memos = convert_memos_to_hash
-  edit_memo =
-    memos['all_memos'].find { |memo| memo['id'] == params[:id] }
-  edit_memo['title'] = params[:title]
-  edit_memo['content'] = params[:content]
-  write_to_memos_list(memos)
+  CONNECTION.exec(
+    "UPDATE Memos
+      SET memo_title = $1,
+      memo_content = $2
+      WHERE memo_id = $3",
+    [params[:title], params[:content], params[:id]]
+  )
   redirect "/memos/#{params[:id]}"
 end
 
 get '/memos/:id/edit' do
-  memos = convert_memos_to_hash
-  make_memo_variable(memos)
-  @edit_memo_id = params[:id]
+  memo = identify_the_memo(CONNECTION)
+  make_memo_variable(memo)
   erb :memo_editing
 end
 
@@ -67,19 +64,19 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def convert_memos_to_hash
-    JSON.parse(File.read('memo.json'))
+  def identify_the_memo(connection)
+    connection.exec(
+      "SELECT memo_id, memo_title, memo_content
+        FROM Memos
+        WHERE memo_id = '#{params[:id]}';"
+    )
   end
 
-  def write_to_memos_list(memo_contents)
-    File.open('memo.json', 'w') { |file| JSON.dump(memo_contents, file) }
-  end
-
-  def make_memo_variable(memos)
-    memo = memos['all_memos'].find { |m| m['id'] == params[:id] }
+  def make_memo_variable(memo)
     @memo = {
-      title: memo['title'],
-      content: memo['content']
+      id: memo[0]['memo_id'],
+      title: memo[0]['memo_title'],
+      content: memo[0]['memo_content']
     }
   end
 end
