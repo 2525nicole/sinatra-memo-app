@@ -43,7 +43,7 @@ PRIMARY KEY (memo_id));
 
 5. `app.rb`を実行する
 
-`$ app.rb`
+`$ ruby app.rb`
 
 6. ブラウザで以下にアクセスする
 
