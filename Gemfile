@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'sinatra', '~> 3.0'
+gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'webrick'
 gem 'erb_lint', require: false
