@@ -28,7 +28,7 @@
 - PostgreSQLを起動し、データベース`memo_app`を作成する
 
 ```
-create database ;
+create database memo_app;
 ```
 
 - データベース`memo_app`に`memos`テーブルを作成する
