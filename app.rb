@@ -9,13 +9,13 @@ require 'pg'
 CONNECTION = PG.connect(dbname: 'memo_app')
 
 get '/memos' do
-  @memos = CONNECTION.exec('SELECT * FROM Memos')
+  @memos = CONNECTION.exec('SELECT * FROM memos')
   erb :memos
 end
 
 post '/memos/new' do
   CONNECTION.exec(
-    'INSERT INTO Memos VALUES ($1, $2, $3)',
+    'INSERT INTO memos VALUES ($1, $2, $3)',
     [SecureRandom.uuid, params[:title], params[:content]]
   )
   redirect '/memos'
@@ -33,7 +33,7 @@ end
 
 delete '/memos/:id' do
   CONNECTION.exec(
-    "DELETE FROM Memos WHERE memo_id = '#{params[:id]}'"
+    "DELETE FROM memos WHERE memo_id = '#{params[:id]}'"
   )
   redirect '/deletion_completed_message'
 end
@@ -44,7 +44,7 @@ end
 
 patch '/memos/:id/edit' do
   CONNECTION.exec(
-    "UPDATE Memos
+    "UPDATE memos
       SET memo_title = $1,
       memo_content = $2
       WHERE memo_id = $3",
@@ -67,7 +67,7 @@ helpers do
   def identify_the_memo(connection)
     connection.exec(
       "SELECT memo_id, memo_title, memo_content
-        FROM Memos
+        FROM memos
         WHERE memo_id = '#{params[:id]}';"
     )
   end

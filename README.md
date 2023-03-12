@@ -31,10 +31,10 @@
 create database ;
 ```
 
-- データベース`memo_app`に`Memos`テーブルを作成する
+- データベース`memo_app`に`memos`テーブルを作成する
 
 ```
-CREATE TABLE Memos
+CREATE TABLE memos
 (memo_id CHAR(36) NOT NULL,
 memo_title TEXT NOT NULL,
 memo_content TEXT NOT NULL,
