@@ -13,7 +13,7 @@ get '/memos' do
   erb :memos
 end
 
-post '/memos/new' do
+post '/memos' do
   CONNECTION.exec(
     'INSERT INTO memos VALUES ($1, $2, $3)',
     [SecureRandom.uuid, params[:title], params[:content]]
@@ -42,7 +42,7 @@ get '/deletion_completed_message' do
   erb :deletion_completed_message
 end
 
-patch '/memos/:id/edit' do
+patch '/memos/:id' do
   CONNECTION.exec(
     "UPDATE memos
       SET memo_title = $1,

@@ -1,7 +1,7 @@
 <% content_for :title do %>
   メモ編集
 <% end %>
-<form action="" method="POST" name="patch">
+<form action="/memos/<%= @memo[:id] %>" method="POST" name="patch">
   <input type="hidden" name="_method" value="PATCH">
   <dl>
     <dt><label for="title">タイトル</label></dt>
