@@ -15,8 +15,8 @@ end
 
 post '/memos' do
   CONNECTION.exec(
-    'INSERT INTO memos VALUES ($1, $2, $3)',
-    [SecureRandom.uuid, params[:title], params[:content]]
+    'INSERT INTO memos (memo_title, memo_content) VALUES ($1, $2)',
+    [params[:title], params[:content]]
   )
   redirect '/memos'
 end
@@ -33,7 +33,7 @@ end
 
 delete '/memos/:id' do
   CONNECTION.exec(
-    "DELETE FROM memos WHERE id = '#{params[:id]}'"
+    "DELETE FROM memos WHERE memo_id = '#{params[:id]}'"
   )
   redirect '/deletion_completed_message'
 end
@@ -45,9 +45,9 @@ end
 patch '/memos/:id' do
   CONNECTION.exec(
     "UPDATE memos
-      SET title = $1,
-      content = $2
-      WHERE id = $3",
+      SET memo_title = $1,
+      memo_content = $2
+      WHERE memo_id = $3",
     [params[:title], params[:content], params[:id]]
   )
   redirect "/memos/#{params[:id]}"
@@ -66,17 +66,17 @@ helpers do
 
   def identify_the_memo(connection)
     connection.exec(
-      "SELECT id, title, content
+      "SELECT memo_id, memo_title, memo_content
         FROM memos
-        WHERE id = '#{params[:id]}';"
+        WHERE memo_id = '#{params[:id]}';"
     )
   end
 
   def make_memo_variable(memo)
     @memo = {
-      id: memo[0]['id'],
-      title: memo[0]['title'],
-      content: memo[0]['content']
+      id: memo[0]['memo_id'],
+      title: memo[0]['memo_title'],
+      content: memo[0]['memo_content']
     }
   end
 end

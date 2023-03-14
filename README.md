@@ -35,10 +35,10 @@ create database memo_app;
 
 ```
 CREATE TABLE memos
-(id CHAR(36) NOT NULL,
-title TEXT NOT NULL,
-content TEXT NOT NULL,
-PRIMARY KEY (id));
+(memo_id uuid NOT NULL DEFAULT gen_random_uuid(),
+memo_title TEXT NOT NULL,
+memo_content TEXT NOT NULL,
+PRIMARY KEY (memo_id));
 ```
 
 5. `app.rb`を実行する
