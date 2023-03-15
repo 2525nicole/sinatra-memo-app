@@ -38,6 +38,7 @@ CREATE TABLE memos
 (memo_id uuid NOT NULL DEFAULT gen_random_uuid(),
 memo_title TEXT NOT NULL,
 memo_content TEXT NOT NULL,
+created_at TIMESTAMP DEFAULT current_timestamp,
 PRIMARY KEY (memo_id));
 ```
 
