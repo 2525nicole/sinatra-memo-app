@@ -9,7 +9,7 @@ require 'pg'
 CONNECTION = PG.connect(dbname: 'memo_app')
 
 get '/memos' do
-  @memos = CONNECTION.exec('SELECT * FROM memos')
+  @memos = CONNECTION.exec('SELECT * FROM memos ORDER BY created_at DESC')
   erb :memos
 end
 
