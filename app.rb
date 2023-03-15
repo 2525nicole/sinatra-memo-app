@@ -32,7 +32,8 @@ end
 
 delete '/memos/:id' do
   CONNECTION.exec(
-    "DELETE FROM memos WHERE memo_id = '#{params[:id]}'"
+    "DELETE FROM memos WHERE memo_id = $1",
+    [ params[:id] ]
   )
   redirect '/deletion_completed_message'
 end
@@ -66,7 +67,8 @@ helpers do
     memo = CONNECTION.exec(
       "SELECT memo_id, memo_title, memo_content
         FROM memos
-        WHERE memo_id = '#{params[:id]}';"
+        WHERE memo_id = $1",
+        [ params[:id] ]
     )
 
     {
