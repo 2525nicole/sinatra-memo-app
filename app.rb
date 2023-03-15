@@ -26,8 +26,7 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  memo = identify_the_memo(CONNECTION)
-  make_memo_variable(memo)
+  @memo = make_memo_variable
   erb :memo_content
 end
 
@@ -54,8 +53,7 @@ patch '/memos/:id' do
 end
 
 get '/memos/:id/edit' do
-  memo = identify_the_memo(CONNECTION)
-  make_memo_variable(memo)
+  @memo = make_memo_variable
   erb :memo_editing
 end
 
@@ -64,16 +62,14 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def identify_the_memo(connection)
-    connection.exec(
+  def make_memo_variable
+    memo = CONNECTION.exec(
       "SELECT memo_id, memo_title, memo_content
         FROM memos
         WHERE memo_id = '#{params[:id]}';"
     )
-  end
 
-  def make_memo_variable(memo)
-    @memo = {
+    {
       id: memo[0]['memo_id'],
       title: memo[0]['memo_title'],
       content: memo[0]['memo_content']
