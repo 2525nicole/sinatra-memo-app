@@ -97,7 +97,7 @@ PLATFORMS
 DEPENDENCIES
   erb_lint
   pg
-  sinatra (~> 3.0)
+  sinatra
   sinatra-contrib
   webrick
 
