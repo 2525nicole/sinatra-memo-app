@@ -8,12 +8,16 @@
   </dd>
   <dt>内容：</dt>
   <dd>
-  <%= h(@memo[:content]).gsub("\r\n", "<br/>") %>
+    <%= h(@memo[:content]).gsub("\r\n", "<br/>") %>
   </dd>
 </dl>
-<div class="change"><a href='/memos/<%= @memo[:id] %>/edit' class="link_to_change">メモを編集する</a></div>
-<form action="" method="POST" name="delete">
+<div class="change">
+  <a href="/memos/<%= @memo[:id] %>/edit" class="link_to_change">メモを編集する</a>
+</div>
+<form action="" method="POST">
   <input type="hidden" name="_method" value="DELETE">
   <input type="submit" value="削除">
 </form>
-<div class="return"><a href='/memos'>TOPページに戻る</a></div>
+<div class="return">
+  <a href="/memos">TOPページに戻る</a>
+</div>
