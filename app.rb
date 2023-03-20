@@ -15,7 +15,7 @@ end
 
 post '/memos' do
   CONNECTION.exec(
-    'INSERT INTO memos (memo_title, memo_content) VALUES ($1, $2)',
+    'INSERT INTO memos (title, content) VALUES ($1, $2)',
     [params[:title], params[:content]]
   )
   redirect '/memos'
@@ -32,7 +32,7 @@ end
 
 delete '/memos/:id' do
   CONNECTION.exec(
-    'DELETE FROM memos WHERE memo_id = $1',
+    'DELETE FROM memos WHERE id = $1',
     [params[:id]]
   )
   redirect '/deletion_completed_message'
@@ -45,9 +45,9 @@ end
 patch '/memos/:id' do
   CONNECTION.exec(
     "UPDATE memos
-      SET memo_title = $1,
-      memo_content = $2
-      WHERE memo_id = $3",
+      SET title = $1,
+      content = $2
+      WHERE id = $3",
     [params[:title], params[:content], params[:id]]
   )
   redirect "/memos/#{params[:id]}"
@@ -65,16 +65,16 @@ helpers do
 
   def make_memo_variable
     memo = CONNECTION.exec(
-      "SELECT memo_id, memo_title, memo_content
+      "SELECT id, title, content
         FROM memos
-        WHERE memo_id = $1",
+        WHERE id = $1",
       [params[:id]]
     )
 
     {
-      id: memo[0]['memo_id'],
-      title: memo[0]['memo_title'],
-      content: memo[0]['memo_content']
+      id: memo[0]['id'],
+      title: memo[0]['title'],
+      content: memo[0]['content']
     }
   end
 end
