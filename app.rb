@@ -26,7 +26,7 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  @memo = make_memo_variable
+  @memo = make_memo_details_hash
   erb :memo_content
 end
 
@@ -53,7 +53,7 @@ patch '/memos/:id' do
 end
 
 get '/memos/:id/edit' do
-  @memo = make_memo_variable
+  @memo = make_memo_details_hash
   erb :memo_editing
 end
 
@@ -62,7 +62,7 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def make_memo_variable
+  def make_memo_details_hash
     memo = CONNECTION.exec(
       'SELECT id, title, content
        FROM memos
