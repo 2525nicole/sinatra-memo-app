@@ -49,7 +49,7 @@ patch '/memos/:id' do
      WHERE id = $3',
     [params[:title], params[:content], params[:id]]
   )
-  redirect '/memos/#{params[:id]}'
+  redirect "/memos/#{params[:id]}"
 end
 
 get '/memos/:id/edit' do
