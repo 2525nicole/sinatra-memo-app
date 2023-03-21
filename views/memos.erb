@@ -6,11 +6,11 @@
   <ul>
     <% @memos.each do |memo| %>
       <% sym_memo =  memo.transform_keys { |k| k.to_sym } %>
-        <li>
-          <a href="/memos/<%= sym_memo[:id] %>">
-            <%= h sym_memo[:title] %>
-          </a>
-        </li>
+      <li>
+        <a href="/memos/<%= sym_memo[:id] %>">
+          <%= h sym_memo[:title] %>
+        </a>
+      </li>
     <% end %>
   </ul>
 </div>
