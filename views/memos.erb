@@ -4,8 +4,7 @@
 <a href="memos/new" id="add_link">メモを登録する</a>
 <div class="memos">
   <ul>
-    <% @memos.each do |memo| %>
-      <% sym_memo =  memo.transform_keys { |k| k.to_sym } %>
+    <% @sym_memos.each do |sym_memo| %>
       <li>
         <a href="/memos/<%= sym_memo[:id] %>">
           <%= h sym_memo[:title] %>
