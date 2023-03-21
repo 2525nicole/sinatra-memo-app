@@ -44,13 +44,12 @@ end
 
 patch '/memos/:id' do
   CONNECTION.exec(
-    "UPDATE memos
-      SET title = $1,
-      content = $2
-      WHERE id = $3",
+    'UPDATE memos SET title = $1,
+     content = $2
+     WHERE id = $3',
     [params[:title], params[:content], params[:id]]
   )
-  redirect "/memos/#{params[:id]}"
+  redirect '/memos/#{params[:id]}'
 end
 
 get '/memos/:id/edit' do
@@ -65,9 +64,9 @@ helpers do
 
   def make_memo_variable
     memo = CONNECTION.exec(
-      "SELECT id, title, content
-        FROM memos
-        WHERE id = $1",
+      'SELECT id, title, content
+       FROM memos
+       WHERE id = $1',
       [params[:id]]
     )
 
