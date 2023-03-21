@@ -11,7 +11,7 @@ CONNECTION = PG.connect(dbname: 'memo_app')
 get '/memos' do
   memos = CONNECTION.exec('SELECT * FROM memos ORDER BY created_at DESC')
   @sym_memos = memos.map do |memo|
-    memo.transform_keys { |k| k.to_sym }
+    memo.transform_keys(&:to_sym)
   end
   erb :memos
 end
