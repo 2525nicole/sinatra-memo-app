@@ -14,7 +14,7 @@
 <div class="change">
   <a href="/memos/<%= @memo[:id] %>/edit" class="link_to_change">メモを編集する</a>
 </div>
-<form action="" method="POST">
+<form action="/memos/<%= @memo[:id] %>" method="POST">
   <input type="hidden" name="_method" value="DELETE">
   <input type="submit" value="削除">
 </form>
