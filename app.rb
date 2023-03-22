@@ -17,10 +17,7 @@ get '/memos' do
 end
 
 post '/memos' do
-  CONNECTION.exec(
-    'INSERT INTO memos (title, content) VALUES ($1, $2)',
-    [params[:title], params[:content]]
-  )
+  CONNECTION.exec('INSERT INTO memos (title, content) VALUES ($1, $2)', [params[:title], params[:content]])
   redirect '/memos'
 end
 
