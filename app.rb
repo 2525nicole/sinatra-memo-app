@@ -29,15 +29,12 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  @memo = make_memo_details_hash
+  @memo = retrieve_one_memo
   erb :memo_content
 end
 
 delete '/memos/:id' do
-  CONNECTION.exec(
-    'DELETE FROM memos WHERE id = $1',
-    [params[:id]]
-  )
+  CONNECTION.exec('DELETE FROM memos WHERE id = $1', [params[:id]])
   redirect '/deletion_completed_message'
 end
 
@@ -46,17 +43,12 @@ get '/deletion_completed_message' do
 end
 
 patch '/memos/:id' do
-  CONNECTION.exec(
-    'UPDATE memos SET title = $1,
-     content = $2
-     WHERE id = $3',
-    [params[:title], params[:content], params[:id]]
-  )
+  CONNECTION.exec('UPDATE memos SET title = $1, content = $2 WHERE id = $3', [params[:title], params[:content], params[:id]])
   redirect "/memos/#{params[:id]}"
 end
 
 get '/memos/:id/edit' do
-  @memo = make_memo_details_hash
+  @memo = retrieve_one_memo
   erb :memo_editing
 end
 
@@ -65,13 +57,8 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def make_memo_details_hash
-    memo = CONNECTION.exec(
-      'SELECT id, title, content
-       FROM memos
-       WHERE id = $1',
-      [params[:id]]
-    )
+  def retrieve_one_memo
+    memo = CONNECTION.exec('SELECT id, title, content FROM memos WHERE id = $1', [params[:id]])
 
     {
       id: memo[0]['id'],
