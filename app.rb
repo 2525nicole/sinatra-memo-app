@@ -56,11 +56,6 @@ helpers do
 
   def retrieve_one_memo
     memo = CONNECTION.exec('SELECT id, title, content FROM memos WHERE id = $1', [params[:id]])
-
-    {
-      id: memo[0]['id'],
-      title: memo[0]['title'],
-      content: memo[0]['content']
-    }
+    memo[0].transform_keys(&:to_sym)
   end
 end
