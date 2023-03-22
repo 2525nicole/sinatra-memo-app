@@ -34,12 +34,12 @@ create database memo_app;
 - データベース`memo_app`に`memos`テーブルを作成する
 
 ```
-CREATE TABLE memos
-(id uuid NOT NULL DEFAULT gen_random_uuid(),
-title TEXT NOT NULL,
-content TEXT NOT NULL,
-created_at TIMESTAMP DEFAULT current_timestamp NOT NULL,
-PRIMARY KEY (id)
+CREATE TABLE memos (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  PRIMARY KEY (id)
 );
 ```
 
