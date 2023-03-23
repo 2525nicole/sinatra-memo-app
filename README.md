@@ -23,11 +23,31 @@
 
 `$ bundle install`
 
-4. `app.rb`を実行する
+4. メモの保存先になるデータベースを準備する
 
-`$ app.rb`
+- PostgreSQLを起動し、データベース`memo_app`を作成する
 
-5. ブラウザで以下にアクセスする
+```
+create database memo_app;
+```
+
+- データベース`memo_app`に`memos`テーブルを作成する
+
+```
+CREATE TABLE memos (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  PRIMARY KEY (id)
+);
+```
+
+5. `app.rb`を実行する
+
+`$ ruby app.rb`
+
+6. ブラウザで以下にアクセスする
 
 `http://localhost:4567/memos`
 

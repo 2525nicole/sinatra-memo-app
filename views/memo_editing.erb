@@ -1,17 +1,25 @@
 <% content_for :title do %>
   メモ編集
 <% end %>
-<form action="" method="POST" name="patch">
+<form action="/memos/<%= @memo[:id] %>" method="POST">
   <input type="hidden" name="_method" value="PATCH">
   <dl>
-    <dt><label for="title">タイトル</label></dt>
-    <dd><input type="text" name="title" id="title" value="<%= @memo[:title] %>" required class="form_text"></dd>
-    <dt><label for="content">内容</label></dt>
-    <dd><textarea name="content" id="content" required class="form_textarea"><%= @memo[:content] %></textarea></dd>
+    <dt>
+      <label for="title">タイトル</label>
+    </dt>
+    <dd>
+      <input type="text" name="title" id="title" value="<%= @memo[:title] %>" required class="form_text">
+    </dd>
+    <dt>
+      <label for="content">内容</label>
+    </dt>
+    <dd>
+      <textarea name="content" id="content" required class="form_textarea"><%= @memo[:content] %></textarea>
+    </dd>
   </dl>
   <input type="submit" value="変更を保存" class="btn">
 </form>
 <div class="return">
-  <a href='/memos/<%= @edit_memo_id %>'>前のページに戻る</a>
-  <a href='/memos'>TOPページに戻る</a>
+  <a href="/memos/<%= @memo[:id] %>">前のページに戻る</a>
+  <a href="/memos">TOPページに戻る</a>
 </div>
